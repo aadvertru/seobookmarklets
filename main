@@ -1,0 +1,71 @@
+// 1. Count words in a webpage via bookmark - add this as a bookmark to your web browser. When added, visit a webpage and hit the bookmark for a popup count.
+
+javascript:(function(){
+var text = document.body.innerText;
+var wordCount = text.split(" ").length;
+alert("This webpage has " + wordCount + " words.");
+})();
+
+
+// 2. Count keyword frequency within a page - add this as a bookmark to your web browser, When added, visit a page & hit the bookmark to enter a keyword and then find out % within the content
+
+javascript:(function(){
+var keyword = prompt("Enter the keyword you want to check:");
+var text = document.body.innerText;
+var wordCount = text.split(" ").length;
+var keywordCount = (text.match(new RegExp(keyword, "gi")) || []).length;
+var density = (keywordCount / wordCount * 100).toFixed(2) + "%";
+alert("The keyword density for '" + keyword + "' on this webpage is " + density);
+})();
+
+
+// 3. Find duplicate copy elsewhere on a website or the web - use this script to create a bookmark - select a piece of text on your page and hit the bookmark and it'll look for that text elsewhere - nb remove brackets from the googlesearch URL next to com
+
+javascript:(function(){
+var selectedText = window.getSelection().toString();
+var googleSearch = "https://www.google[.]com/search?q=intext:" + selectedText;
+window.open(googleSearch);
+})();
+
+
+// 4. Count how many links are follow vs nofollow in a page -
+
+javascript:(function(){
+var links = document.getElementsByTagName("a");
+var totalLinks = links.length;
+var nofollowLinks = 0;
+for (var i = 0; i < links.length; i++) {
+if (links[i].rel == "nofollow") {
+nofollowLinks++;
+}
+}
+alert("This webpage has " + totalLinks + " links. " + nofollowLinks + " of them have rel='nofollow'.");
+})();
+
+
+// 5. Highlight all nofollow text links yellow - add this script to highlight all nofollow links within a page in yellow
+
+javascript:(function(){  var links = document.getElementsByTagName("a");  for (var i = 0; i < links.length; i++) {    if (links[i].rel == "nofollow") {      links[i].style.backgroundColor = "yellow";    }  } })();
+
+
+// 6. Highlight all BROKEN links in a webpage - add this script to your bookmarks to check & highlight all broken outbound links on a page
+
+javascript:(function(){
+var links = document.getElementsByTagName("a");
+for (var i = 0; i < links.length; i++) {
+if (links[i].href && links[i].href.indexOf("http") === 0) {
+(function(link) {
+var xhr = new XMLHttpRequest();
+xhr.open("HEAD", link.href);
+xhr.onreadystatechange = function() {
+if (xhr.readyState === 4) {
+if (xhr.status >= 400) {
+link.style.backgroundColor = "red";
+}
+}
+};
+xhr.send();
+})(links[i]);
+}
+}
+})();
